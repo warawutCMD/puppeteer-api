@@ -2,6 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { PuppeteerController } from './controllers/puppeteerController';
 import { TwitterController } from './controllers/twitterController';
+import { AuthController } from './controllers/authController';
 // import { PuppeteerService } from './services/puppeteerService';
 
 const app = express();
@@ -10,6 +11,7 @@ const port = 3000;
 // const puppeteerService = new PuppeteerService();
 const puppeteerController = new PuppeteerController();
 const twitterController = new TwitterController();
+const authController = new AuthController();
 
 // เปิดเบราว์เซอร์เมื่อโปรเจคเริ่มต้น
 // puppeteerService.launchBrowser().then(() => {
@@ -34,6 +36,26 @@ app.get('/twitter', async (req: Request, res: Response) => {
     await twitterController.scrapeData(req, res);
   } catch (error) {
     console.error('Error in scrape route:', error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+app.get('/encrypt', async (req: Request, res: Response) => {
+  try {
+    const data = await authController.getTwitterPasswordHas();
+    res.json(data);
+  } catch (error) {
+    console.error('Error: ', error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+app.get('/decrypt', async (req: Request, res: Response) => {
+  try {
+    const data = await authController.getTwitterPassword();
+    res.json(data);
+  } catch (error) {
+    console.error('Error: ', error);
     res.status(500).json({ error: 'Something went wrong' });
   }
 });

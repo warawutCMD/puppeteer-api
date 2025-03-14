@@ -5,6 +5,7 @@ import { PuppeteerService } from './puppeteerService';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import { AuthService } from './authService';
 
 dotenv.config();
 
@@ -12,12 +13,16 @@ export class TwitterService {
   private browser: Browser | null = null;
   private page: Page | null = null;
   private puppeteerService: PuppeteerService;
+  private authService: AuthService;
+
   private email: string | null = null;
   private username: string | null = null;
   private password: string;
   constructor() {
     puppeteer.use(StealthPlugin());
     this.puppeteerService = new PuppeteerService();
+    this.authService = new AuthService();
+
     this.email = process.env.TWITTER_EMAIL || null;
     this.username = process.env.TWITTER_USERNAME || null;
     this.password = process.env.TWITTER_PASSWORD || '';
@@ -94,10 +99,10 @@ export class TwitterService {
     }
 
     // // ดึง password จาก AuthService
-    // const password = process.env.TWITTER_PASSWORD;
+    const password = await this.authService.getTwitterPassword();
 
     // ใส่ password
-    await page.type('input[name="password"]', this.password, { delay: 100 });
+    await page.type('input[name="password"]', password, { delay: 100 });
     await page.keyboard.press('Enter');
 
     // รอผลลัพธ์ของการล็อกอิน
