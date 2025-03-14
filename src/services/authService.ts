@@ -62,12 +62,10 @@ export class AuthService {
     return decryptedBuffer.toString('utf8'); // ✅ แปลง Buffer เป็น String
   }
 
-  async getTwitterPassword() {
+  async decryptPassAES(passHas: string) {
     console.log('getTwitterPasswordHas...');
-    if (!process.env.TWITTER_PASSWORD_HAS) {
-      throw new Error(
-        'TWITTER_PASSWORD_HAS is not set in environment variables'
-      );
+    if (!passHas) {
+      throw new Error('passHas is not set in environment variables');
     }
     if (!process.env.KEY_HAX) {
       throw new Error('KEY_HAX is not set in environment variables');
@@ -82,7 +80,7 @@ export class AuthService {
     }
 
     const decryptedMessage = await this.decryptAES(
-      process.env.TWITTER_PASSWORD_HAS,
+      passHas,
       process.env.KEY_HAX,
       process.env.IV_HAX,
       process.env.AUTH_TAG_HEX

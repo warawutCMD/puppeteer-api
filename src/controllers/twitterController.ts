@@ -15,6 +15,8 @@ export class TwitterController {
   async scrapeData(req: Request, res: Response): Promise<Response> {
     try {
       const url = req.query.url;
+      const passHas =
+        typeof req.query.passHas === 'string' ? req.query.passHas : undefined;
 
       if (typeof url !== 'string') {
         return res
@@ -23,7 +25,7 @@ export class TwitterController {
       }
 
       await this.twitterService.launchBrowser();
-      const data = await this.twitterService.extractTweetData(url);
+      const data = await this.twitterService.extractTweetData(url, passHas);
       await this.twitterService.closeBrowser();
       return res.json(data);
     } catch (error) {

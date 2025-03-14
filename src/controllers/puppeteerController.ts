@@ -11,7 +11,7 @@ export class PuppeteerController {
   // API endpoint สำหรับการ scrape เว็บไซต์
   async scrapeData(req: Request, res: Response): Promise<Response> {
     try {
-      const url = req.query.url;
+      const { url, passHas } = req.query;
 
       if (typeof url !== 'string') {
         return res
@@ -21,7 +21,7 @@ export class PuppeteerController {
 
       await this.puppeteerService.launchBrowser();
       const data = await this.puppeteerService.scrapeWebsite(url);
-      await this.puppeteerService.closeBrowser();
+      // await this.puppeteerService.closeBrowser();
       return res.json(data);
     } catch (error) {
       await this.puppeteerService.closeBrowser();

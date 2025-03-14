@@ -40,9 +40,9 @@ app.get('/twitter', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/encrypt', async (req: Request, res: Response) => {
+app.post('/encrypt', async (req: Request, res: Response) => {
   try {
-    const data = await authController.getTwitterPasswordHas();
+    const data = await authController.encryptAES(req.body.Pass);
     res.json(data);
   } catch (error) {
     console.error('Error: ', error);
@@ -50,9 +50,9 @@ app.get('/encrypt', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/decrypt', async (req: Request, res: Response) => {
+app.post('/decrypt', async (req: Request, res: Response) => {
   try {
-    const data = await authController.getTwitterPassword();
+    const data = await authController.decryptAES(req.body);
     res.json(data);
   } catch (error) {
     console.error('Error: ', error);

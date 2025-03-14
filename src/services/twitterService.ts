@@ -68,12 +68,13 @@ export class TwitterService {
     }
   }
 
-  async loginToTwitter(page: Page) {
+  async loginToTwitter(page: Page, passHas?: string | null) {
     console.log('🔄 Logging into Twitter...');
     await page.goto('https://twitter.com/login', { waitUntil: 'networkidle2' });
 
     if (!this.email) throw new Error('email invalid');
     if (!this.username) throw new Error('username invalid');
+    if (!passHas) throw new Error('passHas invalid');
 
     // ใส่ username
     await page.waitForSelector('input[autocomplete="username"]', {
@@ -99,7 +100,7 @@ export class TwitterService {
     }
 
     // // ดึง password จาก AuthService
-    const password = await this.authService.getTwitterPassword();
+    const password = await this.authService.decryptPassAES(passHas);
 
     // ใส่ password
     await page.type('input[name="password"]', password, { delay: 100 });
@@ -130,7 +131,8 @@ export class TwitterService {
     }
   }
 
-  async fetchTweetData(url: string) {
+  async fetchTweetData(url: string, passHas?: string | null) {
+    console.log('url : ', url);
     if (!this.browser) throw new Error('Browser not launched');
     if (!url) throw new Error('url invalid');
 
@@ -173,7 +175,7 @@ export class TwitterService {
 
     if (!loggedIn) {
       console.log('❌ Not logged in! Trying to login...');
-      await this.loginToTwitter(page); // 🔹 ล็อกอินใหม่
+      await this.loginToTwitter(page, passHas); // 🔹 ล็อกอินใหม่
     }
 
     await page.goto(url, { waitUntil: 'networkidle2' });
@@ -182,9 +184,9 @@ export class TwitterService {
     return tweetData;
   }
 
-  async extractTweetData(postUrl: string) {
+  async extractTweetData(postUrl: string, passHas?: string | null) {
     // const tweetJSON: TweetJsonType = await this.fetchTweetData(postUrl);
-    const tweetJSON: any = await this.fetchTweetData(postUrl);
+    const tweetJSON: any = await this.fetchTweetData(postUrl, passHas);
     if (!tweetJSON) {
       console.log('❌ ไม่พบข้อมูลโพสต์');
       return null;
