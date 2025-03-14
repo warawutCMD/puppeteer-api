@@ -160,7 +160,7 @@ export class TwitterService {
         try {
           const body = await response.text();
           tweetData = JSON.parse(body);
-          console.log('✅ ดึงข้อมูลจาก API เรียบร้อย:', tweetData);
+          console.log('✅ page.on ดึงข้อมูลจาก API เรียบร้อย:', tweetData);
         } catch (err) {
           console.log('⚠️ Error extracting response:', err);
         }
