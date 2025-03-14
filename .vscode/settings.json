@@ -1,0 +1,35 @@
+{
+    // ทั้งโปรเจค
+    "editor.fontSize": 10,
+    "editor.fontFamily": "Fira Code",
+    "editor.tabSize": 4,
+    "workbench.colorTheme": "One Dark Pro",
+    "editor.formatOnSave": true,
+    "prettier.singleQuote": true,
+
+    // "files.trimTrailingWhitespace": true, // ลบช่องว่าง (whitespace) ที่ไม่จำเป็นท้ายบรรทัดโดยอัตโนมัติเมื่อบันทึกไฟล์
+
+    // เฉาพะ typescript
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "prettier.singleQuote": true,
+        "editor.rulers": [
+            {
+                "column": 80, // จำนวนอักษร
+                "color": "#ff00FF" // สีของไม้บรรทัด
+            },
+            // 120 // ที่ 120 ใช้เส้นที่กำหนดทั้ง project
+        ],
+    },
+
+    "cSpell.words": [
+        "noti",
+        "influencers",
+        "Tellscore"
+    ],
+
+    // "editor.rulers": [80,120], // เส้นแบ่ง(ไม้บรรทัด)
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#ff4081", // สีของไม้บรรทัด
+    }
+}
